@@ -23,7 +23,7 @@ This project is motivated by the observation that correctness, explainability, a
 
 The goal of this project is to design and implement a cloud control plane where correctness, explainability, and failure handling are treated as core design concerns, rather than as features added later.
 
-- To achieve this, the project explores a control-plane design that:
+To achieve this, the project explores a control-plane design that:
 
 - checks safety and liveness properties using explicit state models and runtime validation,
 
