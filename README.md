@@ -1,6 +1,6 @@
 # A-Verifiable-Explainable-Failure-Aware-Cloud-Control-Plane
 
-**Status:** Research Protoype
+**Status:** Research Prototype
 
 **Domain:** Distributed systems, Cloud Infrastructure and System Verification
 
