@@ -43,7 +43,7 @@ The control plane is designed around a small set of architectural principles tha
 
 All system behavior is driven by a declarative desired state stored in a central API. Clients describe what they want the system to achieve, while controllers are responsible for how that state is reached. This separation simplifies reasoning about system behavior and enables consistent reconciliation.
 
-**Event-driven Reconciliation**
+**Event-driven reconciliation**
 
 Controllers react to state changes through watch-based event streams rather than periodic polling. Each controller runs a reconciliation loop that compares desired and observed state and performs idempotent actions to reduce divergence. This approach reduces unnecessary work and ensures timely responses to state changes.
 
