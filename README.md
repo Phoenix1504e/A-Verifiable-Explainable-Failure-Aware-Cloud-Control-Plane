@@ -52,7 +52,7 @@ Controllers react to state changes through watch-based event streams rather than
 
 State updates use optimistic concurrency with versioned objects. Each update is checked against the latest version of the resource, which prevents updates from being overwritten and makes concurrent changes visible.
 
-**Explicit failure modelling**
+**Explicit failure modeling**
 
 Failures are treated as expected system conditions rather than exceptional cases. The control plane models common failure modes—such as component crashes or temporary network partitions—and defines how controllers and schedulers should respond to them. This makes failure behavior easier to reason about and test.
 
