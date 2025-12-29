@@ -43,7 +43,16 @@ The control plane is designed around a small set of architectural principles tha
 
 All system behavior is driven by a declarative desired state stored in a central API. Clients describe what they want the system to achieve, while controllers are responsible for how that state is reached. This separation simplifies reasoning about system behavior and enables consistent reconciliation.
 
-**Event driven Reconciliation**
+**Event-driven reconciliation**
 
 Controllers react to state changes through watch-based event streams rather than periodic polling. Each controller runs a reconciliation loop that compares desired and observed state and performs idempotent actions to reduce divergence. This approach reduces unnecessary work and ensures timely responses to state changes.
+
+
+**Optimistic concurrency control**
+
+State updates use optimistic concurrency with versioned objects. Each update is checked against the latest version of the resource, which prevents updates from being overwritten and makes concurrent changes visible.
+
+**Explicit failure modeling**
+
+Failures are treated as expected system conditions rather than exceptional cases. The control plane models common failure modes—such as component crashes or temporary network partitions—and defines how controllers and schedulers should respond to them. This makes failure behavior easier to reason about and test.
 
