@@ -56,7 +56,7 @@ State updates use optimistic concurrency with versioned objects. Each update is 
 
 Failures are treated as expected system conditions rather than exceptional cases. The control plane models common failure modes—such as component crashes or temporary network partitions—and defines how controllers and schedulers should respond to them. This makes failure behavior easier to reason about and test.
 
-### 2.2 High-Level Architecture 
+### 2.2 High-Level Architecture
 
 ``` mermaid
 flowchart TB
