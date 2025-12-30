@@ -59,7 +59,6 @@ Failures are treated as expected system conditions rather than exceptional cases
 ### 2.2 High-Level Architecture 
 
 ``` mermaid
-
 flowchart TB
     Client["Client / User"]
     API["API Server<br/>(Declarative Interface)"]
