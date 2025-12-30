@@ -104,7 +104,7 @@ The scheduler is responsible for making placement decisions when resources requi
 
 Additional modules observe state transitions and controller actions to support runtime checks and decision explanations. These components do not directly mutate system state, but instead analyze execution traces to validate invariants and produce interpretable explanations for system behavior.
 
-## 3 Formal Core: Correctness by Construction
+## 3. Formal Core: Correctness by Construction
 
 ### 3.1 State Model
 
