@@ -39,19 +39,19 @@ The system is not intended for production use. Instead, it serves as a research 
 
 The control plane is designed around a small set of architectural principles that guide both its structure and behavior. These principles are intended to keep the system predictable, inspectable, and resilient, even under concurrency and partial failure.
 
-#### 2.1.1 Declarative desired state
+#### Declarative desired state
 
 All system behavior is driven by a declarative desired state stored in a central API. Clients describe what they want the system to achieve, while controllers are responsible for how that state is reached. This separation simplifies reasoning about system behavior and enables consistent reconciliation.
 
-#### 2.1.2 Event-driven reconciliation
+#### Event-driven reconciliation
 
 Controllers react to state changes through watch-based event streams rather than periodic polling. Each controller runs a reconciliation loop that compares desired and observed state and performs idempotent actions to reduce divergence. This approach reduces unnecessary work and ensures timely responses to state changes.
 
-#### 2.1.3 Optimistic concurrency control
+#### Optimistic concurrency control
 
 State updates use optimistic concurrency with versioned objects. Each update is checked against the latest version of the resource, which prevents updates from being overwritten and makes concurrent changes visible.
 
-#### 2.1.4 Explicit failure modeling
+#### Explicit failure modeling
 
 Failures are treated as expected system conditions rather than exceptional cases. The control plane models common failure modes—such as component crashes or temporary network partitions—and defines how controllers and schedulers should respond to them. This makes failure behavior easier to reason about and test.
 
@@ -84,23 +84,42 @@ flowchart TB
 
 The system follows a Kubernetes-inspired control plane architecture composed of loosely coupled components that communicate through a shared, versioned state store. Each component has a clearly defined responsibility, allowing behavior to be reasoned about independently while still supporting coordinated system-wide behavior.
 
-#### 2.2.1 API Server
+#### API Server
 
 The API server acts as the central entry point to the control plane. It exposes a declarative interface through which clients submit desired state. All state changes pass through the API server, which performs basic validation and persists state in the storage layer.
 
-#### 2.2.2 Storage Layer
+#### Storage Layer
 
 The storage layer holds the authoritative system state using versioned objects. It allows components to read and update state safely, detect conflicting updates, and watch for changes. By acting as a shared source of truth, the storage layer enables controllers and schedulers to coordinate without direct communication.
 
-#### 2.2.3 Controllers
+#### Controllers
 
 Controllers are long-running processes that watch for changes to specific resource types. Each controller compares desired state with observed state and executes idempotent actions to reduce any divergence. Controllers are designed to tolerate restarts and partial failures without compromising correctness.
 
-#### 2.2.4 Scheduler
+#### Scheduler
 
 The scheduler is responsible for making placement decisions when resources require assignment. It observes unscheduled objects, evaluates constraints and available capacity, and records scheduling decisions back into the shared state. Scheduling decisions are treated as explicit state transitions rather than implicit side effects.
 
-#### 2.2.5 Verification and Explanation Modules
+#### Verification and Explanation Modules
 
 Additional modules observe state transitions and controller actions to support runtime checks and decision explanations. These components do not directly mutate system state, but instead analyze execution traces to validate invariants and produce interpretable explanations for system behavior.
 
+## 3 Formal Core: Correctness by Construction
+
+### 3.1 State Model
+
+The control plane is built around an explicit state model that separates desired state, observed state, and reconciled state. This separation allows the system to reason about intent, reality, and progress independently, which is essential for correctness under concurrency and failure.
+
+#### Desired State
+
+The desired state represents the user’s intent. It is defined declaratively through API objects submitted to the API server and stored in the shared state store. Desired state does not describe how actions are performed, only what the system is expected to achieve.
+
+#### Observed State
+
+The observed state reflects the system’s current view of reality. It is produced by controllers through observation of external systems and internal components. Observed state may temporarily diverge from desired state due to delays, failures, or partial execution.
+
+#### Reconciled State
+
+Reconciled state represents the system’s progress toward aligning observed state with desired state. Controllers continuously compare desired and observed state and perform idempotent actions to reduce any difference. Reconciliation is incremental and may require multiple iterations to converge.
+
+State transitions are recorded as updates to versioned objects in the shared state store. Each transition is treated as an explicit and durable change, allowing other components to observe, verify, and reason about system behavior over time.
