@@ -123,3 +123,13 @@ The observed state reflects the system’s current view of reality. It is produc
 Reconciled state represents the system’s progress toward aligning observed state with desired state. Controllers continuously compare desired and observed state and perform idempotent actions to reduce any difference. Reconciliation is incremental and may require multiple iterations to converge.
 
 State transitions are recorded as updates to versioned objects in the shared state store. Each transition is treated as an explicit and durable change, allowing other components to observe, verify, and reason about system behavior over time.
+
+### 3.2 State Transitions and Invariants
+
+State changes in the control plane are governed by well-defined transition rules and a small set of system invariants. Rather than allowing arbitrary updates, the system restricts how state may evolve over time, ensuring that unsafe or inconsistent configurations are detected and avoided.
+
+#### State transitions
+
+State changes in the control plane follow clear and restricted rules. Instead of allowing arbitrary updates, the system defines how state is allowed to change and enforces a small set of conditions that must always hold. This helps prevent inconsistent or unsafe system behavior.
+
+#### 
