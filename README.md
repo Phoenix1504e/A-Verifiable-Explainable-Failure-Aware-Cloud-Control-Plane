@@ -140,7 +140,7 @@ Transitions are designed to be idempotent. Re-applying the same transition does 
 
 Invariants define system-level conditions that must always hold, regardless of execution order or failure. Rather than describing desired outcomes, invariants restrict the set of valid state transitions.
 
-- Examples of enforced invariants include:
+Examples of enforced invariants include:
 
 - At most one active leader per controller group.
 
