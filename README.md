@@ -123,3 +123,29 @@ The observed state reflects the system’s current view of reality. It is produc
 Reconciled state represents the system’s progress toward aligning observed state with desired state. Controllers continuously compare desired and observed state and perform idempotent actions to reduce any difference. Reconciliation is incremental and may require multiple iterations to converge.
 
 State transitions are recorded as updates to versioned objects in the shared state store. Each transition is treated as an explicit and durable change, allowing other components to observe, verify, and reason about system behavior over time.
+
+### 3.2 State Transitions and Invariants
+
+State changes in the control plane follow clear and restricted rules. Instead of allowing arbitrary updates, the system defines how state is allowed to change and enforces a small set of conditions that must always hold. This helps prevent inconsistent or unsafe system behavior.
+
+#### State Transitions
+
+State transitions are performed as explicit updates to versioned resources in the shared state store. Each transition represents a single, intentional step taken by a controller or scheduler as part of reconciliation.
+
+Before a transition is applied, it is checked against the latest version of the resource. If the resource has changed concurrently, the transition is rejected and retried using updated state. This makes concurrent modifications visible and prevents silent overwrites.
+
+Transitions are designed to be idempotent. Re-applying the same transition does not introduce inconsistency, allowing reconciliation to continue safely after retries, crashes, or restarts.
+
+#### System Invariants
+
+Invariants define system-level conditions that must always hold, regardless of execution order or failure. Rather than describing desired outcomes, invariants restrict the set of valid state transitions.
+
+- Examples of enforced invariants include:
+
+- At most one active leader per controller group.
+
+- Resource versions progress monotonically.
+
+- Managed resources must have a valid ownership reference.
+
+Invariant checks are performed when transitions are proposed or observed. If a violation is detected, the transition is blocked or flagged for corrective action, preventing incorrect state from spreading through the system.
